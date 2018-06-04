@@ -1,13 +1,14 @@
 close all
 clear all
 
-pathname = uigetdir;
+pathname = uigetdir; %opens a dialog box for the user to select the file location
 cd(pathname)%cd = opens the folder
 Allfiles = dir;   % get list of all files from current directory
-filenames = {Allfiles.name};
-folders = filenames([Allfiles.isdir]);
+filenames = {Allfiles.name}; % Allfiles.name or ".name" is the varialble array that is created when using dir
+folders = filenames([Allfiles.isdir]); %isdir checks if the filenames that were populated is a directory (else the array includes both files and folders)
 folders = folders(3:end);%remove unwanted first two charaters
 
+%Initialize variables with zeros
 fE1=zeros(8,1);
 fE2=zeros(8,1);
 meanE1=zeros();
@@ -17,12 +18,12 @@ ratio=zeros();
 %%
 %Load folders list
 for i=1:length(folders) % # of folders
-    s=folders(i);
+    s=folders(i); %load folders one by one
     folder=sprintf('%s', s{:});%convert folder name to string
     cd ([pathname '\' folder '\Pos0'])%Enter image directory
     A=dir('*.tif'); %load all tiff files in the directory
-    check1=1;
-    check2=1;
+    check1=1; %counter for images from first camera
+    check2=1; %counter for images from second camera
    %Load images 
     for ii=1:length(A)% # of frames for a camera
         if isempty(strfind(A(ii).name,'Evolve1')) == 0
